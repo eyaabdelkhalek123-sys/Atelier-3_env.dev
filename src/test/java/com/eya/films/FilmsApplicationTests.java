@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
 import com.eya.films.entities.Film;
+import com.eya.films.entities.Genre;
 import com.eya.films.repos.FilmRepository;
 import com.eya.films.service.FilmService;
 
@@ -59,13 +60,63 @@ class FilmsApplicationTests {
 		}   
 	}
 	
-	@Test 
-	public void testFindByNomFilmContains() { 
-		Page<Film> fils = filmService.getAllFilmsParPage(0,2); 
-		System.out.println(fils.getSize()); 
-		System.out.println(fils.getTotalElements()); 
-		System.out.println(fils.getTotalPages()); 
-		fils.getContent().forEach(f -> {System.out.println(f.toString()); 
-		});  
+	 @Test 
+	 public void testFindByNomFilm() { 
+		 List<Film> fils = filmRepository.findByNomFilm("Zootopia"); 
+		 for (Film f : fils) { 
+			 System.out.println(f); 
+		} 
+	 }
+	
+	 @Test 
+	 public void testFindByNomFilmContains () { 
+		 List<Film> fils=filmRepository.findByNomFilmContains("Z"); 
+		 for (Film f : fils) 	{ 
+			 System.out.println(f); 
+		 } 
 	}
+	 
+	 @Test 
+	 public void testfindByNomRate() { 
+		 List<Film>  fils = filmRepository.findByNomRate("Parasite",7.0); 
+		 for (Film f : fils) { 
+			 System.out.println(f); 
+		 } 
+	 } 
+	 
+	 @Test 
+	 public void testfindByGenre() { 
+		 Genre gen = new Genre(); 
+		 gen.setIdGen(1L);    
+		 List<Film>  fils = filmRepository.findByGenre(gen); 
+		 for (Film f : fils) { 
+			 System.out.println(f); 
+		 } 
+	 } 
+	 
+	 @Test 
+	 public void testfindByGenreIdGen() {    
+		 List<Film>  fils = filmRepository.findByGenreIdGen(1L); 
+		 for (Film f : fils) { 
+			 System.out.println(f); 
+		 } 
+	 } 
+	 
+	 @Test 
+	 public void testfindByOrderByNomFilmAsc() { //ordre croissant
+	  List<Film>  fils = filmRepository.findByOrderByNomFilmAsc();   
+	   for (Film f : fils) 
+	   { 
+	    System.out.println(f); 
+	   } 
+	 } 
+	 
+	 @Test 
+	 public void testTrierFilmsNomsRate() { 
+		 List<Film>  fils = filmRepository.trierFilmsNomsRate();
+		 
+		 for (Film f : fils) { 
+			 System.out.println(f); 
+		 } 
+	 } 
 }

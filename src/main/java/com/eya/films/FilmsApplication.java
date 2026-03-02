@@ -17,8 +17,8 @@ public class FilmsApplication implements CommandLineRunner  {
 	
 	@Override 
 	public void run(String... args) throws Exception { 
-		filmService.saveFilm(new Film("Parasite", 8.5 , new Date()));
-		filmService.saveFilm(new Film("The Pltform : El Hoyo", 7.0 , new Date()));
-		filmService.saveFilm(new Film("Dune : Part 2", 8.4 , new Date()));
+		//filmService.saveFilm(new Film("Parasite", 8.5 , new Date()));
+		//filmService.saveFilm(new Film("The Pltform : El Hoyo", 7.0 , new Date()));
+		//filmService.saveFilm(new Film("Dune : Part 2", 8.4 , new Date()));
 	} 
 }

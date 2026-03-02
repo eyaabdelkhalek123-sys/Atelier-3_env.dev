@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.eya.films.entities.Film;
+import com.eya.films.entities.Genre;
 import com.eya.films.repos.FilmRepository;
 
 @Service
@@ -50,6 +51,41 @@ public class FilmServiceImpl implements FilmService{
 	public Page<Film> getAllFilmsParPage(int page, int size) {
 		
 		return filmRepository.findAll(PageRequest.of(page, size));
+	}
+
+	@Override
+	public List<Film> findByNomFilm(String nom) {
+		return filmRepository.findByNomFilm(nom);
+	}
+
+	@Override
+	public List<Film> findByNomFilmContains(String nom) {
+		return filmRepository.findByNomFilmContains(nom);
+	}
+
+	@Override
+	public List<Film> findByNomRate(String nom, Double rate) {
+		return filmRepository.findByNomRate(nom,rate);
+	}
+
+	@Override
+	public List<Film> findByGenre(Genre genre) {
+		return filmRepository.findByGenre(genre);
+	}
+
+	@Override
+	public List<Film> findByGenreIdGen(Long id) {
+		return filmRepository.findByGenreIdGen(id);
+	}
+
+	@Override
+	public List<Film> findByOrderByNomFilmAsc() {
+		return filmRepository.findByOrderByNomFilmAsc();
+	}
+
+	@Override
+	public List<Film> trierFilmsNomsRate() {
+		return filmRepository.trierFilmsNomsRate();
 	}
 
 	

@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Film {
@@ -16,6 +17,9 @@ public class Film {
 	private String nomFilm;
 	private Double rateFilm;
 	private Date dateSortie;
+	
+	@ManyToOne 
+	private Genre genre;
 	
 	public Film() {
 		super();
@@ -59,6 +63,14 @@ public class Film {
 	
 	public void setDateSortie(Date dateSortie) {
 		this.dateSortie = dateSortie;
+	}
+
+	public Genre getGenre() {
+		return genre;
+	}
+
+	public void setGenre(Genre genre) {
+		this.genre = genre;
 	}
 
 	@Override
