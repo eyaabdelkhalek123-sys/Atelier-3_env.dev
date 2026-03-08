@@ -11,19 +11,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data; 
 import lombok.NoArgsConstructor; 
  
-@Data //genere les méthodes nécessaires (lombok)
+@Data 
 @NoArgsConstructor 
 @AllArgsConstructor 
 @Entity 
 public class Genre { 
- @Id 
- @GeneratedValue(strategy = GenerationType.IDENTITY) 
- private Long idGen; 
- private String nomGen; 
- private String descriptionGen; 
+	 @Id 
+	 @GeneratedValue(strategy = GenerationType.IDENTITY) 
+	 private Long idGen; 
+	 private String nomGen; 
+	 private String descriptionGen; 
   
- @JsonIgnore 
- @OneToMany(mappedBy = "genre") 
- private List<Film> films; 
+	 @JsonIgnore 
+	 @OneToMany(mappedBy = "genre") 
+	 private List<Film> films; 
 } 
 

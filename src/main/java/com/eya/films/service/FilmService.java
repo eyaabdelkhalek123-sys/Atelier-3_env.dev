@@ -24,5 +24,7 @@ public interface FilmService {
 	List<Film> trierFilmsNomsRate();
   
 	Page<Film> getAllFilmsParPage(int page, int size);
+	
+	List<Genre> getAllGenres(); 
   
 }

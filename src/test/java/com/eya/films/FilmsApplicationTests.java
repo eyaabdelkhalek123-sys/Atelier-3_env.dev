@@ -96,7 +96,7 @@ class FilmsApplicationTests {
 	 
 	 @Test 
 	 public void testfindByGenreIdGen() {    
-		 List<Film>  fils = filmRepository.findByGenreIdGen(1L); 
+		 List<Film>  fils = filmRepository.findByGenreIdGen(3L); 
 		 for (Film f : fils) { 
 			 System.out.println(f); 
 		 } 

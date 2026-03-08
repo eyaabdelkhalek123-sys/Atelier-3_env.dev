@@ -10,12 +10,16 @@ import org.springframework.stereotype.Service;
 import com.eya.films.entities.Film;
 import com.eya.films.entities.Genre;
 import com.eya.films.repos.FilmRepository;
+import com.eya.films.repos.GenreRepository;
 
 @Service
 public class FilmServiceImpl implements FilmService{
 	
 	@Autowired
 	FilmRepository filmRepository;
+	
+	@Autowired 
+	GenreRepository genreRepository; 
 
 	@Override
 	public Film saveFilm(Film f) {
@@ -87,6 +91,11 @@ public class FilmServiceImpl implements FilmService{
 	public List<Film> trierFilmsNomsRate() {
 		return filmRepository.trierFilmsNomsRate();
 	}
+	
+	@Override 
+	 public List<Genre> getAllGenres() { 
+	  return genreRepository.findAll(); 
+	 } 
 
 	
 
