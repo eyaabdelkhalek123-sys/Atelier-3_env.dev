@@ -9,9 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller; 
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute; 
 import org.springframework.web.bind.annotation.RequestMapping; 
-import org.springframework.web.bind.annotation.RequestParam; 
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.eya.films.dto.FilmDTO;
 import com.eya.films.entities.Film;
 import com.eya.films.entities.Genre;
 import com.eya.films.service.FilmService;
@@ -22,6 +25,16 @@ import jakarta.validation.Valid;
 public class FilmController { 
 	@Autowired 
 	FilmService filmService; 
+	
+	@GetMapping("accessDenied")
+	public String error() {
+		return "accessDenied";
+	}
+	
+	@GetMapping(value = "/") 
+	public String welcome() { 
+	return "index"; 
+	} 
  
 	@RequestMapping("/ListeFilms") 
 	public String listeFilms(ModelMap modelMap , 
@@ -45,7 +58,7 @@ public class FilmController {
 	@RequestMapping("/showCreate") 
 	public String showCreate(ModelMap modelMap) { 
 		List<Genre> gens = filmService.getAllGenres();
-		modelMap.addAttribute("film", new Film()); 
+		modelMap.addAttribute("film", new FilmDTO()); 
 		modelMap.addAttribute("mode", "new");
 		modelMap.addAttribute("genres", gens); 
 		return "formFilm"; 
@@ -66,16 +79,22 @@ public class FilmController {
 	}*/
 	
 	@RequestMapping("/saveFilm") 
-	public String saveProduit(@Valid Film film, BindingResult bindingResult, 
+	public String saveFilm(@Valid FilmDTO filmDTO, BindingResult bindingResult, ModelMap modelMap, 
 			@RequestParam (name="page",defaultValue = "0") int page, 
 			@RequestParam (name="size",defaultValue = "2") int size) { 
 		int currentPage; 
 		boolean isNew = false; 
 		if (bindingResult.hasErrors()) 
-			return "formFilm";       
-		if (film.getIdFilm()==null) 
+			{List<Genre> gens = filmService.getAllGenres();
+			 
+			
+			modelMap.addAttribute("genres", gens); 
+			modelMap.addAttribute("film", filmDTO);
+			return "formFilm"; 
+			}      
+		if (filmDTO.getIdFilm()==null) 
 			isNew=true; 
-		filmService.saveFilm(film); 
+		filmService.saveFilm(filmDTO); 
 		if (isNew) { 
 			Page<Film> fils = filmService.getAllFilmsParPage(page, size); 
 			currentPage = fils.getTotalPages()-1; 
@@ -103,7 +122,7 @@ public class FilmController {
 	public String editerFilm(@RequestParam("id") Long id,ModelMap modelMap ,
 			@RequestParam (name="page",defaultValue = "0") int page, 
 			@RequestParam (name="size", defaultValue = "2") int size) { 
-		Film f=  filmService.getFilm(id); 
+		FilmDTO f=  filmService.getFilm(id); 
 		List<Genre> gens = filmService.getAllGenres();
 		modelMap.addAttribute("film", f);  
 		modelMap.addAttribute("mode", "edit"); 
@@ -114,17 +133,28 @@ public class FilmController {
 	} 
 
 	@RequestMapping("/updateFilm") 
-	public String updateFilm(@ModelAttribute("film") Film 
-			film,  @RequestParam("date") String date, 
-			ModelMap modelMap) throws ParseException  {   
+	public String updateFilm(@Valid @ModelAttribute("film") FilmDTO filmDTO,  
+			BindingResult bindingResult,
+			@RequestParam("date") String date, 
+			ModelMap modelMap , @RequestParam (name="page",defaultValue = "0") int page,
+            @RequestParam (name="size",defaultValue = "2") int size) throws ParseException  {
+		
+		if (bindingResult.hasErrors()) {
+	        List<Genre> gens = filmService.getAllGenres();
+	        modelMap.addAttribute("genres", gens);
+	        modelMap.addAttribute("page", page);
+	        modelMap.addAttribute("size", size);
+	        modelMap.addAttribute("mode", "edit");
+	        return "formFilm";
+	    }
 		//conversion de la date  
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd"); 
 		Date dateSortie = dateformat.parse(String.valueOf(date)); 
-		film.setDateSortie(dateSortie); 
+		filmDTO.setDateSortie(dateSortie); 
        
-		filmService.updateFilm(film); 
-		List<Film> fils= filmService.getAllFilms(); 
-		modelMap.addAttribute("films", fils);  
-		return "listeFilms"; 
+		filmService.updateFilm(filmDTO); 
+//		List<FilmDTO> fils= filmService.getAllFilms(); 
+//		modelMap.addAttribute("films", fils);  
+		return "redirect:/ListeFilms?page="+page+"&size="+size; 
 	} 
 } 

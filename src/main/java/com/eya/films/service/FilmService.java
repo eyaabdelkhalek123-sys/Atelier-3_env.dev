@@ -4,17 +4,18 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.eya.films.dto.FilmDTO;
 import com.eya.films.entities.Film;
 import com.eya.films.entities.Genre; 
  
 public interface FilmService { 
   
-	Film saveFilm(Film f); 
-	Film updateFilm(Film f); 
+	FilmDTO saveFilm(FilmDTO f); 
+	FilmDTO getFilm(Long id); 
+	List<FilmDTO> getAllFilms(); 
+	FilmDTO updateFilm(FilmDTO f); 
 	void deleteFilm(Film f); 
 	void deleteFilmById(Long id); 
-	Film getFilm(Long id); 
-	List<Film> getAllFilms(); 
 	List<Film> findByNomFilm(String nom); 
 	List<Film> findByNomFilmContains(String nom); 
 	List<Film> findByNomRate (String nom, Double rate); 
@@ -26,5 +27,8 @@ public interface FilmService {
 	Page<Film> getAllFilmsParPage(int page, int size);
 	
 	List<Genre> getAllGenres(); 
+	
+	FilmDTO convertEntityToDto (Film film); 
+	Film convertDtoToEntity(FilmDTO filmDto); 
   
 }
